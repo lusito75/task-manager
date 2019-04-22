@@ -1,10 +1,11 @@
 const ottoman = require('ottoman')
 
 const UserCB = ottoman.model('User', {
-    name: 'string',
-    email: 'string',
-    age: 'integer',
-    password: 'string'
+    name: {type: "string"},
+    email: {type: "string"},
+    age: {type: "integer"},
+    password: {type: "string"},
+    created_at: {type: "Date", default: Date.now}
 });
 
 module.exports = UserCB;
