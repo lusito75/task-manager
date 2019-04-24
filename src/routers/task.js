@@ -16,14 +16,31 @@ router.post('/tasks', auth, async (req, res) => {
     }
 });
 
+// GET /tasks?completed=true
+// GET /tasks?limit=10?skip=20
+// GET /tasks?sortBy=createdAt:desc
 router.get('/tasks', auth, async (req, res) => {
+    const match = {
+        owner: req.user._id
+    }
+    const sort = {}
+    if (req.query.completed) {
+        match.completed = req.query.completed === 'true'
+    }
+    if (req.query.sortBy) {
+        const field = req.query.sortBy.split(':')[0]
+        const sortvalue = req.query.sortBy.split(':')[1] === 'desc' ? -1 : 1
+        sort[field] = sortvalue
+    }
     try {
-        const tasks = await Task.find({ owner: req.user._id })
-        res.status(200).send(tasks)  // OR
-        // await req.user.populate('tasks').execPopulate()
-        // res.send(req.user.tasks)
+        const tasks = await Task
+            .find( match )
+            .limit(parseInt(req.query.limit))
+            .skip(parseInt(req.query.skip))
+            .sort( sort )
+        res.status(200).send(tasks)
     } catch (e) {
-        res.status(500).send()
+        res.status(500).send(e)
     }
 
 });

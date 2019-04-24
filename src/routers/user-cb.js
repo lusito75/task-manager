@@ -2,6 +2,9 @@ const express = require('express')
 const router = new express.Router()
 const User = require('../models/user-cb');
 
+// need a minimum of the following index created beforheand:
+// CREATE INDEX `type` ON `task-manager-api`(_type)
+
 router.post('/users-cb', async (req, res) => {
     const user = new User(req.body);
     
