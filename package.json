@@ -16,6 +16,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.1.10",
     "mongoose": "^5.3.14",
+    "multer": "^1.4.1",
     "ottoman": "^1.0.5",
     "validator": "^10.11.0"
   },
