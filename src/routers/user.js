@@ -6,11 +6,14 @@ const auth = require('../middleware/auth')
 const multer = require('multer')
 const sharp = require('sharp')
 
+const { sendWelcomeEmail, sendGoodbyeEmail } = require('../emails/account')
+
 router.post('/users', async (req, res) => {
     const user = new User(req.body);
 
     try {
         await user.save()
+        sendWelcomeEmail(user.email, user.name)
         const token = await user.generateAuthToken()
         res.status(201).send({ user, token });
     } catch (e) {
@@ -96,6 +99,7 @@ router.delete('/users/me', auth, async (req, res) => {
         // if (!user) {
         //     return res.status(404).send()
         // }  OR the single line below using mongoose document remove()
+        sendGoodbyeEmail(req.user.name, req.user.email)
         await req.user.remove()
         res.status(200).send(req.user)
     } catch (e) {

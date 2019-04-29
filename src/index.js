@@ -9,7 +9,7 @@ const userRouterCB = require('./routers/user-cb')
 const taskRouterCB = require('./routers/task-cb')
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT
 
 app.use(express.json());
 app.use(userRouter)
